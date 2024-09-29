@@ -7,7 +7,6 @@ int main() {
     int asiento; 
     string clase; 
     string posicion;
-    Avion avion;
     int opcion;
 
     do {
@@ -24,22 +23,16 @@ int main() {
 
         switch (opcion) {
             case 1:
-                avion.asignarAsiento();
                 break;
             case 2:
-                avion.consultarReserva();
                 break;
             case 3:
-                avion.eliminarReserva();
                 break;
             case 4:
-                avion.calcularOcupacion();
                 break;
             case 5:
-                avion.valorTotalVentas();
                 break;
             case 6:
-                avion.valorPromedioPorPasajero();
                 break;
             case 7:
                 cout << "Saliendo del sistema...\n";
@@ -52,3 +45,4 @@ int main() {
 
     return 0;
 }
+
