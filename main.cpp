@@ -7,81 +7,76 @@ struct Pasajero {
     string cedula;
 };
 
-const int EJECUTIVA = 8;
-const int TOTAL_SILLAS = 50;
-
-Pasajero sillas[TOTAL_SILLAS];
-
-void asignarSilla(int clase) {
-    string nombre, cedula;
-    int inicio, fin;
-
-    if (clase == 1) {
-        inicio = 0;
-        fin = EJECUTIVA;
-    } else if (clase == 0) {
-        inicio = EJECUTIVA;
-        fin = TOTAL_SILLAS;
-    } else {
-        cout << "Clase no válida. Debe ser 0 (Económica) o 1 (Ejecutiva).\n";
-        return;
-    }
-
-    cout << "Nombre: ";
-    cin >> nombre;
-    cout << "Cedula: ";
-    cin >> cedula;
-
-    for (int i = inicio; i < fin; i++) {
-        if (sillas[i].cedula == "") {
-            sillas[i].nombre = nombre;
-            sillas[i].cedula = cedula;
-            cout << "Silla asignada: " << i + 1 << endl;
-            return;
-        }
-    }
-    cout << "No hay sillas disponibles en la clase seleccionada.\n";
-}
-
-void buscarReserva() {
-    string cedula;
-    cout << "Cedula: ";
-    cin >> cedula;
-
-
-    for (int i = 0; i < TOTAL_SILLAS; i++) {
-        if (sillas[i].cedula == cedula) {
-            cout << "Reserva de " << sillas[i].nombre << " en silla " << i + 1 << endl;
-            return;
-        }
-    }
-    cout << "Reserva no encontrada.\n";
-}
-
 int main() {
-    int opcion, clase;
+    Pasajero sillas[50];  // 8 sillas ejecutivas y 42 económicas
+    int opcion = 0;
     bool continuar = true;
 
     while (continuar) {
         cout << "1. Asignar silla\n2. Buscar reserva\n3. Salir\n";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                cout << "Clase (0: Económica, 1: Ejecutiva): ";
-                cin >> clase;
-                asignarSilla(clase);
-                break;
-            case 2:
-                buscarReserva();
-                break;
-            case 3:
-                continuar = false;
-                break;
-            default:
-                cout << "Opción no válida.\n";
-                break;
+        if (opcion == 1) {
+            string nombre, cedula;
+            int clase, inicio, fin;
+            cout << "Nombre: ";
+            cin >> nombre;
+            cout << "Cedula: ";
+            cin >> cedula;
+            cout << "Clase (0: Económica, 1: Ejecutiva): ";
+            cin >> clase;
+
+            if (clase == 1) {
+                inicio = 0;
+                fin = 8;
+            } else if (clase == 0) {
+                inicio = 8;
+                fin = 50;
+            } else {
+                cout << "Clase no válida.\n";
+                continue;
+            }
+
+            bool sillaAsignada = false;
+            for (int i = inicio; i < fin; i++) {
+                if (sillas[i].cedula == "") {
+                    sillas[i].nombre = nombre;
+                    sillas[i].cedula = cedula;
+                    cout << "Silla asignada: " << i + 1 << endl;
+                    sillaAsignada = true;
+                    break;
+                }
+            }
+
+            if (!sillaAsignada) {
+                cout << "No hay sillas disponibles en la clase seleccionada.\n";
+            }
+        } else if (opcion == 2) {
+            string cedula;
+            cout << "Cedula: ";
+            cin >> cedula;
+
+            bool reservaEncontrada = false;
+            for (int i = 0; i < 50; i++) {
+                if (sillas[i].cedula == cedula) {
+                    cout << "Reserva de " << sillas[i].nombre << " en silla " << i + 1 << endl;
+                    reservaEncontrada = true;
+                    break;
+                }
+            }
+
+            if (!reservaEncontrada) {
+                cout << "Reserva no encontrada.\n";
+            }
+        } else if (opcion == 3) {
+            continuar = false;
+        } else {
+            cout << "Opción no válida.\n";
         }
+    }
+
+    return 0;
+}
     }
 
     return 0;
