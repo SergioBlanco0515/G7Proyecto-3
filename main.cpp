@@ -2,9 +2,9 @@
 #include <string>
 using namespace std;
 
-const int NUM_SILLAS = 50; 
+const int NUM_SILLAS = 50;
 const int EJECUTIVAS = 8;
-const int ECONOMICAS = NUM_SILLAS - EJECUTIVAS;  
+const int ECONOMICAS = NUM_SILLAS - EJECUTIVAS;
 
 struct Silla {
     int numero;
@@ -15,7 +15,7 @@ struct Silla {
     bool ocupada = false;
 };
 
-Silla sillas[NUM_SILLAS];  
+Silla sillas[NUM_SILLAS];
 
 void inicializarSillas() {
     for (int i = 0; i < NUM_SILLAS; i++) {
@@ -35,14 +35,13 @@ void asignarSilla() {
     bool asignada = false;
 
     cout << "Ingrese el nombre del pasajero: ";
-    cin.ignore();  
-    getline(cin, nombre);  
+    cin.ignore();
+    getline(cin, nombre);
     cout << "Ingrese la cédula del pasajero: ";
     getline(cin, cedula);
 
     cout << "Elija la clase (0 para Ejecutiva, 1 para Económica): ";
     cin >> claseSeleccionada;
-
     if (claseSeleccionada != 0 && claseSeleccionada != 1) {
         cout << "Clase no válida. Debe ser 0 (Ejecutiva) o 1 (Económica).\n";
         return;
@@ -52,6 +51,10 @@ void asignarSilla() {
 
     cout << "Elija la posición (Ventana, Centro, Pasillo): ";
     cin >> posicion;
+    if (posicion != "Ventana" && posicion != "Centro" && posicion != "Pasillo") {
+        cout << "Posición no válida. Debe ser Ventana, Centro o Pasillo.\n";
+        return;
+    }
 
     for (int i = 0; i < NUM_SILLAS; i++) {
         if (!sillas[i].ocupada && sillas[i].clase == clase && sillas[i].posicion == posicion) {
@@ -131,6 +134,17 @@ void buscarPasajero() {
     }
 }
 
+void calcularPorcentajeOcupacion() {
+    int ocupadas = 0;
+    for (int i = 0; i < NUM_SILLAS; i++) {
+        if (sillas[i].ocupada) {
+            ocupadas++;
+        }
+    }
+    double porcentaje = (ocupadas * 100.0) / NUM_SILLAS;
+    cout << "Porcentaje de ocupación del avión: " << porcentaje << "%\n";
+}
+
 int main() {
     inicializarSillas();
     int opcion;
@@ -141,7 +155,8 @@ int main() {
         cout << "2. Consultar reserva\n";
         cout << "3. Eliminar reserva\n";
         cout << "4. Buscar pasajero (por cédula)\n";
-        cout << "5. Salir\n";
+        cout << "5. Calcular porcentaje de ocupación\n";
+        cout << "6. Salir\n";
         cout << "Ingrese una opción: ";
         cin >> opcion;
 
@@ -159,12 +174,16 @@ int main() {
                 buscarPasajero();
                 break;
             case 5:
+                calcularPorcentajeOcupacion();
+                break;
+            case 6:
                 cout << "Saliendo del sistema de reservas.\n";
                 break;
             default:
                 cout << "Opción no válida. Intente nuevamente.\n";
         }
-    } while (opcion != 5);
+    } while (opcion != 6);
 
     return 0;
 }
+
