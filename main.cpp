@@ -5,6 +5,8 @@ using namespace std;
 const int NUM_SILLAS = 50;
 const int EJECUTIVAS = 8;
 const int ECONOMICAS = NUM_SILLAS - EJECUTIVAS;
+const int PRECIO_EJECUTIVAS = 200;
+const int PRECIO_ECONOMICAS = 100;
 
 struct Silla {
     int numero;
@@ -23,7 +25,7 @@ void inicializarSillas() {
         sillas[i].clase = (i < EJECUTIVAS) ? "Ejecutiva" : "Económica";
         sillas[i].posicion = (i % 3 == 0) ? "Ventana" : (i % 3 == 1) ? "Centro" : "Pasillo";
         if (sillas[i].clase == "Ejecutiva" && sillas[i].posicion == "Centro") {
-            sillas[i].posicion = (i % 2 == 0) ? "Ventana" : "Pasillo";  // Las ejecutivas no tienen "Centro"
+            sillas[i].posicion = (i % 2 == 0) ? "Ventana" : "Pasillo";
         }
     }
 }
@@ -145,6 +147,32 @@ void calcularPorcentajeOcupacion() {
     cout << "Porcentaje de ocupación del avión: " << porcentaje << "%\n";
 }
 
+void consultarValorTotalVentas() {
+    int totalVentas = 0;
+    for (int i = 0; i < NUM_SILLAS; i++) {
+        if (sillas[i].ocupada) {
+            totalVentas += (sillas[i].clase == "Ejecutiva") ? PRECIO_EJECUTIVAS : PRECIO_ECONOMICAS;
+        }
+    }
+    cout << "Valor total de ventas por concepto de sillas ocupadas: $" << totalVentas << "\n";
+}
+
+void consultarValorPromedioVenta() {
+    int totalVentas = 0, ocupadas = 0;
+    for (int i = 0; i < NUM_SILLAS; i++) {
+        if (sillas[i].ocupada) {
+            totalVentas += (sillas[i].clase == "Ejecutiva") ? PRECIO_EJECUTIVAS : PRECIO_ECONOMICAS;
+            ocupadas++;
+        }
+    }
+    if (ocupadas == 0) {
+        cout << "No hay sillas ocupadas. Valor promedio: $0\n";
+    } else {
+        double promedio = totalVentas / static_cast<double>(ocupadas);
+        cout << "Valor promedio de venta por pasajero: $" << promedio << "\n";
+    }
+}
+
 int main() {
     inicializarSillas();
     int opcion;
@@ -156,7 +184,9 @@ int main() {
         cout << "3. Eliminar reserva\n";
         cout << "4. Buscar pasajero (por cédula)\n";
         cout << "5. Calcular porcentaje de ocupación\n";
-        cout << "6. Salir\n";
+        cout << "6. Consultar valor total de ventas\n";
+        cout << "7. Consultar valor promedio de ventas por pasajero\n";
+        cout << "8. Salir\n";
         cout << "Ingrese una opción: ";
         cin >> opcion;
 
@@ -177,11 +207,22 @@ int main() {
                 calcularPorcentajeOcupacion();
                 break;
             case 6:
+                consultarValorTotalVentas();
+                break;
+            case 7:
+                consultarValorPromedioVenta();
+                break;
+            case 8:
                 cout << "Saliendo del sistema de reservas.\n";
                 break;
             default:
                 cout << "Opción no válida. Intente nuevamente.\n";
         }
+    } while (opcion != 8);
+
+    return 0;
+}
+
     } while (opcion != 6);
 
     return 0;
